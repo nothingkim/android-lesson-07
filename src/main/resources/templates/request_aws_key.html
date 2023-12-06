@@ -1,0 +1,33 @@
+<html lang="ko">
+    <body>
+        <h2> AWS API Key가 등록되지 않았습니다.</h2>
+        AWS API Key가 등록되지 않았습니다.<br/>
+        보안을 위해, 해당 프로젝트에서는 S3 API에 접근하기 위해 API 키를 어플리케이션 활성화시 1회 요청합니다.<br/>
+        API 키는 저장되지 않습니다. <br/><br/><br/>
+
+        API 키를 만들려면 다음 과정을 따라합니다.
+        <ol>
+            <li><a href="https://us-east-1.console.aws.amazon.com/iamv2/home?region=us-east-2#/users">AWS IAM 콘솔</a>에
+                접속합니다.
+            </li>
+            <li><b> 사용자 생성</b>을 누릅니다.</li>
+            <li>중복되지 않는 사용자명을 입력합니다. 해당 프로젝트에서는 <b>s3_user</b>로 생성하십시오.</li>
+            <li><b>직접 정책 연결</b>를 선택하고, <b>AmazonS3FullAccess</b>를 검색합니다. 해당 권한은 발급된 키로 자신의 S3 API의 모든 접근을 허용하겠다는 의미입니다.
+            </li>
+            <li>사용자 생성을 누릅니다.</li>
+            <li>AWS IAM 콘솔에서 <b>s3_user</b>을 클릭합니다.</li>
+            <li><b>요약</b> 창에서 푸른식 <span style="color: skyblue;font-weight: bold;">액세스 키 만들기</span>를 클릭합니다.</li>
+            <li><b>AWS 외부에서 실행되는 애플리케이션</b>을 선택하고, <b>다음</b>을 누릅니다.</li>
+            <li><b>액세스 키 만들기</b>를 누릅니다.</li>
+            <li>출력된 액세스 키를 입력합니다. <span
+                    style="color: red;font-weight: bolder">경고: 한번 발급된 키는 페이지를 나가면 다시 볼 수 없습니다.</span></li>
+        </ol>
+        <form method="post" action="api/v1/rest/aws/auth">
+            <b> API 액세스 키 </b><br/>
+            <input name="apiKey" type="text" placeholder="AWS 액세스 키.."/><br/>
+            <b> API 비밀 액세스 키 </b><br/>
+            <input name="apiSecretKey" type="password" placeholder="AWS 비밀 액세스 키.."/><br/><br/>
+            <input type="submit" value="확인"/>
+        </form>
+    </body>
+</html>

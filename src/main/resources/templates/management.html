@@ -1,0 +1,28 @@
+<html>
+<body>
+<h1> 유저 관리 페이지 <a href="/dashboard">(유저 대시보드로 이동)</a></h1>
+<h3><a href="/admin"> 관리자 대시보드로 이동 </a></h3>
+<ul id="userList">
+
+</ul>
+</body>
+<script>
+        // Function to load user list from localStorage
+        function loadUserList() {
+            const userList = JSON.parse(localStorage.getItem('userList')) || [];
+
+            // Display the user list in the ul#userList
+            const userListElement = document.getElementById("userList");
+            userListElement.innerHTML = "";
+
+            userList.forEach(user => {
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode(user));
+                userListElement.appendChild(li);
+            });
+        }
+
+        // Call loadUserList on page load
+        loadUserList();
+    </script>
+</html>

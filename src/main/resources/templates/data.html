@@ -1,0 +1,31 @@
+<html lang="ko">
+    <body>
+        <h2> AWS API에 연결되었습니다! </h2>
+        AWS API에 성공적으로 연결되었습니다. 현재 파악된 파일 목록은 다음과 같습니다 : <br/>
+        <ul id="fileList">
+
+        </ul>
+        <form  method="post"action="api/v1/rest/aws/upload" enctype="multipart/form-data">
+            <input name = "file" type="file" value="파일 선택"/><br/>
+            <input type="submit" value="업로드"/><br/>
+        </form>
+        <span id="message"> </span>
+    </body>
+    <script>
+        (async () => {
+            const response = await fetch('/api/v1/rest/aws/list');
+            const result = await response.json();
+            console.log(result);
+            for (let i = 0; i < result.length; i++) {
+                let li = document.createElement("li");
+                li.appendChild(document.createTextNode(result[i]));
+                document.getElementById("fileList").appendChild(li);
+            }
+        })()
+
+        let params = new URLSearchParams(window.location.search);
+        if (params.get("success") != null) {
+            document.getElementById("message").innerHTML = "파일 업로드에 성공하였습니다.";
+        }
+    </script>
+</html>

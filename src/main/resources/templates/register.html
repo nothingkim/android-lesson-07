@@ -1,0 +1,52 @@
+<html>
+<head>
+    <script>
+        function submitForm() {
+            var formData = {
+                userId: document.getElementById("username").value,
+                password: document.getElementById("password").value
+            };
+
+            fetch('/api/v1/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    // Handle successful registration response (no JSON to parse)
+                    console.log('User registered successfully');
+
+                    // Add the new user to the localStorage
+                    const userList = JSON.parse(localStorage.getItem('userList')) || [];
+                    userList.push(formData.userId);
+                    localStorage.setItem('userList', JSON.stringify(userList));
+
+                    // Redirect to the management page
+                    window.location.href = '/';
+                } else {
+                    // Handle other responses with JSON
+                    return response.json();
+                }
+            })
+            .then(data => {
+                // Handle additional logic for responses with JSON (if needed)
+                console.log(data);
+            })
+            .catch(error => {
+                // Handle error during registration
+                console.error('Error during registration:', error);
+            });
+        }
+    </script>
+</head>
+<body>
+<form onsubmit="event.preventDefault(); submitForm();">
+    <input type="text" id="username" name="username" placeholder="ID"/>
+    <input type="password" id="password" name="password" placeholder="비밀번호"/>
+    <input type="submit" value="회원가입"/>
+</form>
+</body>
+</html>

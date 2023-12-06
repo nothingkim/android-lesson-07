@@ -1,0 +1,13 @@
+<html lang="ko">
+    <body>
+        <h2> 이런! </h2>
+        알 수 없는 오류가 발생하였습니다.<br/>
+        서버에서는 다음과 같은 오류를 반환하였습니다: <br/>
+        <span id="error"> </span>
+    </body>
+    <script type="application/javascript">
+        console.log(document.getElementsByName("error"))
+        let params = new URLSearchParams(window.location.search);
+        document.getElementById("error").innerHTML = params.get("errorStatus");
+    </script>
+</html>

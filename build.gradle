@@ -33,6 +33,15 @@ dependencies {
     // 해당 프로젝트에서는 Thymeleaf를 사용하지는 않으나, Spring Boot의 웹 기본 설정을 Thymeleaf로 대체합니다.
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 
+    //  ==================================================
+    //                     AWS SDK
+    //  ==================================================
+    // AWS SDK를 사용하기 전, 전체적인 버전 관리를 위해 BOM(Build Of Material)을 추가합니다.
+    // 해당 프로젝트는 AWS SDK 1.12.529 버전의 BOM을 사용하기에, 다른 AWS 의존성 또한 해당 버전으로 고정됩니다.
+    implementation platform('com.amazonaws:aws-java-sdk-bom:1.12.529')
+    // AWS S3을 사용하기 위해 S3 의존성을 추가합니다.
+    implementation('com.amazonaws:aws-java-sdk-s3')
+
 
     //  ==================================================
     //                      JWT
