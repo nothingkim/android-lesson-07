@@ -20,10 +20,6 @@ public class BaseWebController {
 //        }
 //        return new ModelAndView("request_aws_key.html");
 //    }
-    @RequestMapping("/dashboard")
-    public ModelAndView onUserDashboard() {
-        return new ModelAndView("user_dashboard.html");
-    }
 
     @RequestMapping("/login")
     public ModelAndView onLogin() {

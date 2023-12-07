@@ -38,10 +38,7 @@ public class SpringSecurityConfiguration {
                 .cors(AbstractHttpConfigurer::disable)
                 // 모든 요청에 대해 인증을 넘깁니다.
                 .authorizeHttpRequests(registry -> {
-                    // /dashboard 엔드포인트에 대해, 관리자와 게스트 권한을 가진 사용자만 접근할 수 있도록 설정합니다.
-                    registry.requestMatchers("/dashboard").hasAnyAuthority(Constants.AUTHORITY_ADMIN, Constants.AUTHORITY_GUEST)
-                            // /admin와 /management 엔드포인트에 대해, 관리자 권한을 가진 사용자만 접근할 수 있도록 설정합니다.
-                            .requestMatchers("/admin", "/management").hasAnyAuthority(Constants.AUTHORITY_ADMIN)
+                    registry.requestMatchers("/admin", "/management").hasAnyAuthority(Constants.AUTHORITY_ADMIN)
                             // /api/v1/data/admin 엔드포인트에 대해, 관리자 권한을 가진 사용자만 접근할 수 있도록 설정합니다.
                             .requestMatchers("/api/v1/data/admin/**").hasAnyAuthority(Constants.AUTHORITY_ADMIN)
                             // /api/v1/data 엔드포인트에 대해, 관리자와 게스트 권한을 가진 사용자만 접근할 수 있도록 설정합니다.
@@ -67,7 +64,7 @@ public class SpringSecurityConfiguration {
                             // 로그인 페이지에 대해 모든 사용자가 접근할 수 있도록 설정합니다.
                             .permitAll()
                             // 로그인 성공시 리다이렉트할 페이지를 설정합니다.
-                            .defaultSuccessUrl("/dashboard")
+                            .defaultSuccessUrl("/admin")
                             // 로그인 실패시 리다이렉트할 페이지를 설정합니다.
                             .failureUrl("/login?error=true");
                 })
