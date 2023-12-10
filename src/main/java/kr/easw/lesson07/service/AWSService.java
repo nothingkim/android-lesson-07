@@ -7,13 +7,17 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import jakarta.transaction.Transactional;
 import kr.easw.lesson07.model.dto.AWSKeyDto;
 import org.springframework.beans.factory.DisposableBean;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.sql.DataSource;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -27,6 +31,13 @@ import java.util.UUID;
 
 @Service
 public class AWSService implements DisposableBean {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     public static final String BUCKET_NAME = "nothingkim-bucket-231207";
     private AmazonS3 s3Client;
 
@@ -72,6 +83,45 @@ public class AWSService implements DisposableBean {
         }
     }
 
+    @Transactional
+    public void saveFileListToDatabase(List<String> fileList) {
+        for (String fileName : fileList) {
+            try {
+                byte[] fileContent = getFileContentFromS3(fileName);
+                saveFileToDatabase(fileName, fileContent);
+            } catch (Exception e) {
+                e.printStackTrace();
+                // Handle or log any exceptions that occur during file saving
+            }
+        }
+    }
+
+    @Transactional
+    public void saveFileToDatabase(String fileName, byte[] fileContent) {
+        try {
+            String query = "INSERT INTO FILELIST (file_name, file_content) VALUES (?, ?)";
+            jdbcTemplate.update(query, fileName, fileContent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to save file to database: " + fileName);
+        }
+    }
+
+    public List<String> getFileListFromDatabase() {
+        String query = "SELECT file_name FROM your_file_table";
+        return jdbcTemplate.queryForList(query, String.class);
+    }
+
+    public byte[] downloadFileFromDatabase(String fileName) {
+        try {
+            String query = "SELECT file_content FROM FILELIST WHERE file_name = ?";
+            return jdbcTemplate.queryForObject(query, new Object[]{fileName}, byte[].class);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to download file from database: " + fileName);
+        }
+    }
+
     @Override
     public void destroy() {
         //
@@ -105,5 +155,12 @@ public class AWSService implements DisposableBean {
         }
     }
 
+    private byte[] getFileContentFromS3(String fileName) {
+        // Implement logic to get file content from S3 (similar to your existing AWSService logic)
+        // This could involve using S3 client to download the file content
+        // Return the byte array content
+        return new byte[0];
+    }
 
 }
+

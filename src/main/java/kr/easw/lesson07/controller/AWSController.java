@@ -78,4 +78,20 @@ public class AWSController {
         }
     }
 
+    @PostMapping("/saveFileList")
+    public ResponseEntity<String> onSaveFileListToDatabase(@RequestBody List<String> fileList) {
+        try {
+            awsController.saveFileListToDatabase(fileList);
+            return ResponseEntity.ok("File list saved to database successfully.");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return new ResponseEntity<>("Failed to save file list to database.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/fileList")
+    public List<String> onGetFileListFromDatabase() {
+        return awsController.getFileListFromDatabase();
+    }
+
 }
