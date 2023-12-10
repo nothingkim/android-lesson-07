@@ -1,5 +1,17 @@
 ## 모바일 프로그래밍 14주차 실습 프로젝트
 
+ # 실행 방법
+1. h2.bat 실행
+   - JDBC URL : jdbc:h2:~/mem/testDB
+   - 사용자명 : easw
+   - 비밀번호 : temp_password
+   - 'create table FILELIST' 쿼리 입력 후 실행
+2. Spring boot Applicaiton 실행
+   - Id : admin , PW : admin으로 로그인
+   - s3 API key를 이용하여 로그인
+
+
+---
 <hr>
 모바일 프로그래밍 14주차 실습 프로젝트입니다.
 
